@@ -32,23 +32,30 @@ const SignUpSchema = z
   .object({
     firstName: z
       .string()
-      .min(3, { message: "First name should be at least 3 character long" }),
+      .min(3, "First name should be at least 3 character long")
+      .max(50, "First name cannot exceed 50 characters"),
     lastName: z
       .string()
-      .min(3, { message: "Last name should be at least 3 character long" }),
-    email: z.string().email({ message: "Invalid email address" }),
+      .min(3, "Last name should be at least 3 character long")
+      .max(50, "Last name cannot exceed more than 50 characters"),
+    email: z
+      .string()
+      .email("Invalid email address")
+      .max(256, "Email cannot exceed 256 character"),
     password: z
       .string()
-      .min(8, { message: "Password should contain atleast 8 characters" }),
+      .min(8, "Password should contain atleast 8 characters")
+      .max(20, "Password must be less than 20 characters long"),
     confirmPassword: z
       .string()
-      .min(8, { message: "Password should contain atleast 8 characters" }),
+      .min(8, "Password should contain atleast 8 characters")
+      .max(20, "Password must be less than 20 characters long"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     //.refine method is used for validating password and confirm password are same
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+  }); 
 
 export function SignUpCard() {
   const router = useRouter();

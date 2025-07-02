@@ -22,16 +22,9 @@ import { Button } from "@/components/ui/button";
 import { Logout } from "./Logout";
 import { ModeToggle } from "./ModeToggle";
 
-interface UserData {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  darkmode: string | null;
-  theme: string | null;
-}
 
-const TopNav = ({ userData }: { userData: UserData }) => {
+
+const TopNav = ({ userData }: { userData: UserDetails }) => {
   const userId: number = userData.id;
   return (
     <>
@@ -94,6 +87,16 @@ const TopNav = ({ userData }: { userData: UserData }) => {
                     className="capitalize w-full text-left text-md h-16"
                   >
                     <UserCog className="mr-3" /> Settings
+                  </Button>
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link href={`/`} className="w-full ">
+                  <Button
+                    variant={"ghost"}
+                    className="capitalize w-full text-left text-md h-16"
+                  >
+                    <UserCog className="mr-3" /> Home
                   </Button>
                 </Link>
               </SheetClose>

@@ -24,12 +24,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface BalanceChartData {
-  balance: number;
-  dates: any;
-  times: string;
-}
-
 export const description = "A simple area chart";
 
 const chartConfig = {
@@ -39,13 +33,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const BalanceChart = ({
-  balanceData,
-  month,
-}: {
-  balanceData: any;
-  month: string | undefined;
-}) => {
+const BalanceChart = ({ balanceData }: { balanceData: any }) => {
   const updatedData = getChartData(balanceData);
   const chartData = updatedData.filter(
     (obj) =>
@@ -54,7 +42,7 @@ const BalanceChart = ({
   return (
     <Card className="md:w-2/3 h-full flex flex-col">
       <CardHeader>
-        <CardTitle>Blance Trend</CardTitle>
+        <CardTitle>Balance Trend</CardTitle>
         <CardDescription>This month</CardDescription>
       </CardHeader>
       <CardContent className="h-60 md:h-full w-full flex flex-grow">
@@ -93,57 +81,16 @@ const BalanceChart = ({
       </CardContent>
     </Card>
   );
-  // return (
-  //   <Card className="md:w-3/5">
-  //     <CardHeader>
-  //       <CardTitle>Line Chart - Linear</CardTitle>
-  //       <CardDescription>January - June 2024</CardDescription>
-  //     </CardHeader>
-  //     <CardContent>
-  //       <ChartContainer config={chartConfig}>
-  //         <LineChart
-  //           accessibilityLayer
-  //           data={chartData}
-  //           margin={{
-  //             left: 12,
-  //             right: 12,
-  //           }}
-  //         >
-  //           <CartesianGrid vertical={false} />
-  //           <XAxis
-  //             dataKey="dates"
-  //             tickLine={false}
-  //             axisLine={false}
-  //             tickMargin={8}
-  //             tickFormatter={(value) => value.slice(-2)}
-  //           />
-  //           <ChartTooltip
-  //             cursor={false}
-  //             content={<ChartTooltipContent hideLabel />}
-  //           />
-  //           <Line
-  //             dataKey="balance"
-  //             type="linear"
-  //             stroke="var(--color-balance)"
-  //             strokeWidth={2}
-  //             dot={false}
-  //           />
-  //         </LineChart>
-  //       </ChartContainer>
-  //     </CardContent>
-  //   </Card>
-  // );
 };
 
 export default BalanceChart;
 
-function getChartData(balanceData: BalanceChartData[]) {
+function getChartData(balanceData: BalanceChartData[]): BalanceChartData[] {
   const extendedData = [];
   const today = new Date();
   const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   const startDate = new Date(balanceData[0].dates); // first date of the month or last date of recorded balance of last month
   const endDate = new Date(lastDay); // End date of current month
-
   let lastBalance = null;
   for (
     let date = startDate;
@@ -161,7 +108,7 @@ function getChartData(balanceData: BalanceChartData[]) {
       if (lastBalance !== null) {
         extendedData.push({ dates: currentDate, balance: lastBalance });
       }
-      // If there's no last balance (shouldn't happen in a well-ordered dataset), you might handle it differently
+      // If there's no last balance then you are not displaying graph, so this is not required
     }
   }
   return extendedData;

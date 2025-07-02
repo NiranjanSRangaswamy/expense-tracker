@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart, Sector } from "recharts";
-
-import { PieSectorDataItem } from "recharts/types/polar/Pie";
 import {
   Card,
   CardContent,
@@ -20,12 +17,6 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
-
-interface PieChartData {
-  total: number;
-  category: string;
-  fill: string | undefined;
-}
 
 const chartConfig = {
   total: {
@@ -53,62 +44,30 @@ const chartConfig = {
   },
   Life: {
     label: "Life & Entertainement",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-6))",
   },
   Financial: {
     label: "Financial expenses",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-7))",
   },
   Communication: {
     label: "Communication, PC",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-8))",
   },
   Investments: {
     label: "Investments",
-    color: "hsl(var(--chart-4))",
+    color: "hsl(var(--chart-9))",
   },
   Income: {
     label: "Income",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-10))",
   },
   miscellaneous: {
     label: "Miscellaneous",
-    color: "hsl(var(--chart-1))",
+    color: "hsl(var(--chart-11))",
   },
 } satisfies ChartConfig;
-
-// const chartData = [
-//   { category: "chrome", tota: 275, fill: "var(--color-chrome)" },
-//   { category: "safari", tota: 200, fill: "var(--color-safari)" },
-//   { category: "firefox", tota: 287, fill: "var(--color-firefox)" },
-//   { category: "edge", tota: 173, fill: "var(--color-edge)" },
-//   { category: "other", tota: 190, fill: "var(--color-other)" },
-// ];
-// const chartConfig = {
-//   visitors: {
-//     label: "Visitors",
-//   },
-//   chrome: {
-//     label: "Chrome",
-//     color: "hsl(var(--chart-1))",
-//   },
-//   safari: {
-//     label: "Safari",
-//     color: "hsl(var(--chart-2))",
-//   },
-//   firefox: {
-//     label: "Firefox",
-//     color: "hsl(var(--chart-3))",
-//   },
-//   edge: {
-//     label: "Edge",
-//     color: "hsl(var(--chart-4))",
-//   },
-//   other: {
-//     label: "Other",
-//     color: "hsl(var(--chart-5))",
-//   },
-// } satisfies ChartConfig;
+ 
 const ExpensePieChart = ({
   pieChartData,
 }: {

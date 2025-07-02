@@ -48,8 +48,8 @@ const recordSchema = z.object({
   transType: z.enum(["income", "expense"]),
   category: z.string().min(1, "Select category"),
   subCategory: z.string().min(1, "Select sub category"),
-  note: z.string(),
-  payer: z.string(),
+  note: z.string().max(150, "Note must be within 150 character"),
+  payer: z.string().max(50, "Note must be within 150 character"),
   dates: z.date(),
   hour: z.number(),
   minute: z.number(),
@@ -209,6 +209,7 @@ export function AddRecords({
     const newBalance = balance + values.value;
     date.setHours(values.hour);
     date.setMinutes(values.minute);
+    date.setSeconds(0)
     const data = {
       userId,
       transType: values.transType,

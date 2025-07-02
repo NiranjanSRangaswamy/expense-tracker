@@ -9,21 +9,13 @@ import {
 } from "lucide-react";
 import { Logout } from "./Logout";
 import { Separator } from "@radix-ui/react-dropdown-menu";
+import { Card } from "@/components/ui/card";
 
-interface UserData {
-  id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  darkmode: string | null;
-  theme: string | null;
-}
-
-const AsideNav = ({ userData }: { userData: UserData }) => {
+const AsideNav = ({ userData }: { userData: UserDetails }) => {
   const userId: number = userData.id;
   return (
-    <div className="h-full min-h-screen  bg-card w-72 flex-shrink flex flex-col ">
-      <div className="h-32 w-11/12 mx-auto flex flex-col justify-center items-center">
+    <div className="h-full min-h-screen w-72 flex-shrink flex flex-col py-5">
+      <Card className="h-32 w-11/12 mx-auto flex flex-col justify-center items-center">
         <Avatar>
           <AvatarImage src="" />
           <AvatarFallback className="capitalize">
@@ -33,9 +25,9 @@ const AsideNav = ({ userData }: { userData: UserData }) => {
         </Avatar>
         <h1 className="capitalize">{userData.firstname}</h1>
         <Separator />
-      </div>
+      </Card>
 
-      <div className="grow w-11/12 mx-auto">
+      <div className="grow w-11/12 mx-auto bg-card">
         <Link href={`/user/${userData.id}/dashboard`} className="w-full ">
           <Button
             variant={"ghost"}
@@ -68,8 +60,16 @@ const AsideNav = ({ userData }: { userData: UserData }) => {
             <UserCog className="mr-3" /> Settings
           </Button>
         </Link>
+        <Link href={`/`} className="w-full ">
+          <Button
+            variant={"ghost"}
+            className="capitalize w-full text-left text-md h-16"
+          >
+            <UserCog className="mr-3" /> Home
+          </Button>
+        </Link>
       </div>
-      <div className="w-11/12 mx-auto my-2">
+      <div className="w-11/12 mx-auto my-2 bg-card">
         <Separator />
         <Logout variant={"ghost"} size={24} classes="text-md w-full h-16" />
       </div>

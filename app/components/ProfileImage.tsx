@@ -42,7 +42,7 @@ export function ProfileImage({ userId }: { userId: string | JwtPayload }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="bg-background">
+        <Avatar className="bg-card">
           <AvatarImage src="" />
           <AvatarFallback>
             <CircleUser />

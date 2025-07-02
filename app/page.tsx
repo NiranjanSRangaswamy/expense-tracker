@@ -6,18 +6,12 @@ import { Footer } from "./components/Footer";
 import { cookies } from "next/headers";
 import { JwtPayload, verify } from "jsonwebtoken";
 
-export default function Home() {
-  let id: undefined | string | JwtPayload;
-  const cookieStore = cookies();
-  const token = cookieStore.get("token") || "";
-  if (token) {
-    id = verify(token.value as string, process.env.JWT_SECRET as string);
-  }
-
+export default async function Home() {
+  
   return (
     <div>
-      <Navbar userId={id} />
-      <HomeSection userId={id} />
+      <Navbar />
+      <HomeSection />
       <Features />
       <Footer />
     </div>

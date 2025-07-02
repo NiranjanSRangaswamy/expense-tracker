@@ -1,13 +1,20 @@
+import { cookies } from "next/headers";
 import { SignUpCard } from "./SignUpCard";
 import Image from "next/image";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { JwtPayload } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 
-const HomeSection = ({
-  userId,
-}: {
-  userId: undefined | string | JwtPayload;
-}) => {
+
+
+export const dynamic = "force-dynamic";
+
+const HomeSection = async () => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')
+  let userId: string | JwtPayload = "";
+  if (token?.value) {
+    userId = verify(token?.value as string, process.env.JWT_SECRET as string);
+  }
+  console.log(userId)
   return (
     <section className="home w-full my-3 md:my-0 ">
       <div className="hero w-11/12 md:w-5/6 mx-auto flex flex-col  md:flex-row min-h-[500px] flex-wrap justify-center items-center">
@@ -29,15 +36,24 @@ const HomeSection = ({
         </div>
         <div className="cards flex md:w-1/2 flex-wrap justify-evenly text-center items-center md:min-w-96">
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-blue-500 text-white font-semibold py-1">
+            <h3 className="bg-primary text-white font-semibold py-1 rounded-md">
               Budgeting
             </h3>
-            <Image
-              src="/pie-chart.png"
-              alt="pie chart"
-              width={150}
-              height={150}
-              className="mx-auto my-1"
+            <div
+              className="w-8 h-8 inline-block z-0"
+              style={{
+                height: 150,
+                width: 150,
+                background: "hsl(var(--primary))",
+                WebkitMaskImage: "url(/pie.svg)",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskImage: "url(/pie.svg)",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+              }}
             />
             <em className="text-sm">
               Create personalized budgets to align with your financial goals and
@@ -45,15 +61,24 @@ const HomeSection = ({
             </em>
           </div>
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-blue-500 text-white font-semibold py-1">
+            <h3 className="bg-primary rounded-sm text-white font-semibold py-1">
               Tracking
             </h3>
-            <Image
-              src="/calender.png"
-              alt="calender icon"
-              width={150}
-              height={150}
-              className="mx-auto my-1"
+            <div
+              className="w-8 h-8 inline-block z-0"
+              style={{
+                height: 150,
+                width: 150,
+                background: "hsl(var(--primary))",
+                WebkitMaskImage: "url(/calendar.svg)",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskImage: "url(/calendar.svg)",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+              }}
             />
             <em className="text-sm font-medium">
               Effortlessly record your expenses, categorize them, and analyze
@@ -61,15 +86,24 @@ const HomeSection = ({
             </em>
           </div>
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-blue-500 text-white font-semibold py-1">
+            <h3 className="bg-primary rounded-md text-white font-semibold py-1">
               Analytics
             </h3>
-            <Image
-              src="/bar-chart.png"
-              alt="bar chart"
-              width={150}
-              height={150}
-              className="mx-auto my-1"
+            <div
+              className="w-8 h-8 inline-block z-0"
+              style={{
+                height: 150,
+                width: 150,
+                background: "hsl(var(--primary))",
+                WebkitMaskImage: "url(/reports.svg)",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskImage: "url(/reports.svg)",
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+              }}
             />
             <em className="text-sm">
               Generate insightful reports to understand your spending habits,

@@ -5,11 +5,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-interface featuresData {
-  title: string;
-  descrption: string;
-}
-
 export function Features() {
   let data: featuresData[] = [
     {

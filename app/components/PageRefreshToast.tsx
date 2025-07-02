@@ -1,19 +1,26 @@
 "use client";
 
+import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { ToastAction } from "@radix-ui/react-toast";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const PageRefreshToast = ({ id }: { id: number }) => {
+const PageRefreshToast = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const handleRefresh = () => {
+    router.refresh();
+  };
   useEffect(() => {
     toast({
-      duration: 3000,
       title: "Failed to fetch Data",
+      description: "If the problem continues, try contacting support",
       variant: "destructive",
+      action: (
+        <ToastAction altText="refresh button" onClick={handleRefresh}>
+          Refresh
+        </ToastAction>
+      ),
     });
   }, []);
   return <div></div>;

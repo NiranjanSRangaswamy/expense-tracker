@@ -73,7 +73,7 @@ export function LoginCard() {
           <strong>Login</strong>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-primary-foreground md:w-96">
+      <DialogContent className="bg-background md:w-96">
         <DialogHeader>
           <DialogTitle>Login to your account</DialogTitle>
           <DialogDescription>
@@ -81,15 +81,15 @@ export function LoginCard() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="my-1">
+                <FormItem className="flex flex-col gap-1">
                   <FormLabel>Registered Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email" {...field} className="bg-card"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,16 +99,16 @@ export function LoginCard() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex flex-col gap-1">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Password" {...field} type="password" />
+                    <Input placeholder="Password" {...field} type="password"  className="bg-card"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full mt-3" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
