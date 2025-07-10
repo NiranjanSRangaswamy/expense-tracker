@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
-import { useEffect } from "react";
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 import {
   ColumnDef,
@@ -16,17 +21,19 @@ import {
   getFacetedUniqueValues,
   getSortedRowModel,
   useReactTable,
+  FilterFn,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -37,9 +44,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-import { FilterFn } from "@tanstack/react-table";
+import { ScrollArea } from "@/components/ui/scroll-area"; // Renamed ref to tableScrollAreaRef
 import DateFilter from "./DateFilter";
 import {
   Pagination,
@@ -49,28 +54,75 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
 import ViewRecords from "./ViewRecords";
-import EditRecords from "./EditRecords";
 import Filter from "./Filter";
+import { Card } from "@/components/ui/card";
 
 
 
-const includesSome: FilterFn<any> = (row, columnId, filterValue: string[]) => {
-  if (!filterValue || filterValue.length === 0) return true; // show all
-  const cellValue: string = row.getValue(columnId);
+const includesSome: FilterFn<Records> = (
+  row,
+  columnId,
+  filterValue: string[]
+) => {
+  if (!filterValue || filterValue.length === 0) return true;
+  const cellValue = row.getValue(columnId) as string; 
   return filterValue.includes(cellValue);
 };
 
-export function DataTableDemo({ records }: { records: Records[] }) {
-  const tableRef = useRef<HTMLDivElement | null>(null);
-  const isMediumOrLarger = useMediaQuery("(min-width: 768px)");
-  const oldestDate: Date = records.length
-    ? records[records.length - 1].dates
-    : new Date();
+function processData(
+  records: Records[],
+  startDate: Date,
+  endDate: Date
+): Records[] {
+  const normalizedStartDate = new Date(startDate);
+  normalizedStartDate.setHours(0, 0, 0, 0);
 
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  const [startDate, setStartDate] = useState<Date>(oldestDate);
+  const normalizedEndDate = new Date(endDate);
+  normalizedEndDate.setHours(23, 59, 59, 999); 
+
+  if (normalizedStartDate.getTime() > normalizedEndDate.getTime()) {
+    return [];
+  }
+
+  return records
+    .map((record) => {
+      const recordDateWithTime = new Date(record.dates); 
+
+      const timeParts = String(record.times).split(":").map(Number);
+      if (timeParts.length === 3) {
+        recordDateWithTime.setHours(
+          timeParts[0],
+          timeParts[1],
+          timeParts[2],
+          0
+        );
+      } else {
+        recordDateWithTime.setHours(0, 0, 0, 0); 
+      }
+
+      return { ...record, dates: recordDateWithTime };
+    })
+    .filter((record) => {
+      const recordTimestamp = record.dates.getTime();
+      return (
+        recordTimestamp >= normalizedStartDate.getTime() &&
+        recordTimestamp <= normalizedEndDate.getTime()
+      );
+    });
+}
+
+export function DataTableDemo({ records }: { records: Records[] }) {
+  const tableScrollAreaRef = useRef<HTMLDivElement | null>(null); 
+  const headerRowRef = useRef<HTMLTableRowElement | null>(null); 
+  const firstDataRowRef = useRef<HTMLTableRowElement | null>(null); 
+
+  const isMediumOrLarger = useMediaQuery("(min-width: 768px)");
+
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 }); 
+  const [startDate, setStartDate] = useState<Date>(
+    records.length ? records[records.length - 1].dates : new Date()
+  );
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -84,10 +136,8 @@ export function DataTableDemo({ records }: { records: Records[] }) {
 
   useEffect(() => {
     if (isMediumOrLarger) {
-      // Show all columns
-      setColumnVisibility({});
+      setColumnVisibility({}); 
     } else {
-      // Hide all columns except maybe essential ones
       setColumnVisibility({
         category: false,
         times: false,
@@ -96,164 +146,185 @@ export function DataTableDemo({ records }: { records: Records[] }) {
     }
   }, [isMediumOrLarger]);
 
-  useEffect(() => {
-    const calculatePageSize = () => {
-      if (tableRef.current) {
-        const availableHeight = tableRef.current.clientHeight;
+  useLayoutEffect(() => {
+    const calculateAndSetPageSize = () => {
+      const scrollAreaElement = tableScrollAreaRef.current;
+      const headerElement = headerRowRef.current;
+      const firstRowElement = firstDataRowRef.current;
 
-        // Estimate height per row (~52px row + ~28px padding)
-        const rowHeight = 52;
-        const headerHeight = 50;
-        const reservedHeight = 75; // pagination + padding
+      if (!scrollAreaElement || !headerElement || !firstRowElement) {
+        return;
+      }
 
-        const maxHeight = availableHeight - headerHeight - reservedHeight;
-        const rowsPerPage = Math.floor(maxHeight / rowHeight);
+      const measuredHeaderHeight = headerElement.clientHeight; 
+      const measuredRowHeight = firstRowElement.clientHeight; 
 
-        if (rowsPerPage > 0) {
-          setPagination((prev) => ({
-            ...prev,
-            pageSize: rowsPerPage,
-          }));
-        }
+      if (measuredRowHeight === 0) {
+        return;
+      }
+
+      const availableHeightForDataRows =
+        scrollAreaElement.clientHeight - measuredHeaderHeight;
+
+      const calculatedRowsPerPage = Math.floor(
+        availableHeightForDataRows / measuredRowHeight
+      );
+
+      if (
+        calculatedRowsPerPage > 0 &&
+        calculatedRowsPerPage !== pagination.pageSize
+      ) {
+        setPagination((prev) => ({
+          ...prev,
+          pageSize: calculatedRowsPerPage,
+        }));
+      } else if (calculatedRowsPerPage === 0 && tableData.length > 0) {
+        setPagination((prev) => ({
+          ...prev,
+          pageSize: 1,
+        }));
       }
     };
 
-    // Run initially
-    calculatePageSize();
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(calculateAndSetPageSize);
+    });
 
-    // Re-run on window resize
-    window.addEventListener("resize", calculatePageSize);
-    return () => window.removeEventListener("resize", calculatePageSize);
-  }, []);
-  
+    if (tableScrollAreaRef.current) {
+      resizeObserver.observe(tableScrollAreaRef.current);
+    }
 
-  const columns: ColumnDef<Records>[] = [
-    //transtype
-    {
-      accessorKey: "transtype",
-      header: ({ column }) => (
-        <div className="flex items-center gap-2">
-          Type
-          <Filter column={column} />
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("transtype")}</div>
-      ),
-      filterFn: includesSome,
-    },
-    //date
-    {
-      accessorKey: "dates",
-      header: ({ column }) => {
-        return (
-          <div className="flex items-center gap-2">
-            Date
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-0 m-0"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-            >
-              <ArrowUpDown size={16} />
-            </Button>
-          </div>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="capitalize">
-          {
-            //@ts-ignore
-            row.getValue("dates").toLocaleDateString("en-GB")
-          }
-        </div>
-      ),
-      enableHiding: false,
-    },
-    //time
-    {
-      accessorKey: "times",
-      header: "Time",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("times")}</div>
-      ),
-    },
-    //category
-    {
-      accessorKey: "category",
-      header: ({ column }) => (
-        <div className="flex items-center gap-2">
-          Category
-          <Filter column={column} />
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("category")}</div>
-      ),
-      filterFn: includesSome,
-    },
-    //subcategory
-    {
-      accessorKey: "subcategory",
-      header: ({ column }) => (
-        <div className="flex items-center gap-2">
-          Sub Category
-          <Filter column={column} />
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("subcategory")}</div>
-      ),
-    },
-    //amount
-    {
-      accessorKey: "value",
-      header: ({ column }) => {
-        return (
-          <div className="flex items-center gap-2">
-            Amount
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-0 m-0"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === "asc")
-              }
-            >
-              <ArrowUpDown size={16} />
-            </Button>
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("value"));
+    requestAnimationFrame(calculateAndSetPageSize);
 
-        // Format the amount as a INR amount
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "INR",
-        }).format(amount);
+    return () => {
+      if (tableScrollAreaRef.current) {
+        resizeObserver.unobserve(tableScrollAreaRef.current);
+      }
+    };
+  }, [tableScrollAreaRef.current, tableData.length, pagination.pageSize]);
 
-        return <div className="text-right font-medium">{formatted}</div>;
-      },
-      enableHiding: false,
-    },
-    //actions
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const record = row.original;
-        return <ViewRecords record={record} />;
-      },
-    },
-  ];
 
   const table = useReactTable({
     data: tableData,
-    columns,
+    columns: [
+      //transtype
+      {
+        accessorKey: "transtype",
+        header: ({ column }) => (
+          <div className="flex items-center gap-2">
+            Type
+            <Filter column={column} />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("transtype")}</div>
+        ),
+        filterFn: includesSome,
+      },
+      //dates
+      {
+        accessorKey: "dates",
+        header: ({ column }) => {
+          return (
+            <div className="flex items-center gap-2">
+              Date
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-0 m-0"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown size={16} />
+              </Button>
+            </div>
+          );
+        },
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {(row.getValue("dates") as Date).toLocaleDateString("en-GB")}
+          </div>
+        ),
+        enableHiding: false,
+      },
+      //times
+      {
+        accessorKey: "times",
+        header: "Time",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("times")}</div>
+        ),
+      },
+      //category
+      {
+        accessorKey: "category",
+        header: ({ column }) => (
+          <div className="flex items-center gap-2">
+            Category
+            <Filter column={column} />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="lowercase">{row.getValue("category")}</div>
+        ),
+        filterFn: includesSome,
+      },
+      //subcategory
+      {
+        accessorKey: "subcategory",
+        header: ({ column }) => (
+          <div className="flex items-center gap-2">
+            Sub Category
+            <Filter column={column} />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("subcategory")}</div>
+        ),
+        filterFn: includesSome, // Added missing filterFn
+      },
+      //value
+      {
+        accessorKey: "value",
+        header: ({ column }) => {
+          return (
+            <div className="flex items-center gap-2">
+              Amount
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-0 m-0"
+                onClick={() =>
+                  column.toggleSorting(column.getIsSorted() === "asc")
+                }
+              >
+                <ArrowUpDown size={16} />
+              </Button>
+            </div>
+          );
+        },
+        cell: ({ row }) => {
+          const amount = parseFloat(row.getValue("value"));
+          const formatted = new Intl.NumberFormat("en-IN", {
+            // Changed to en-IN for INR
+            style: "currency",
+            currency: "INR",
+          }).format(amount);
+          return <div className="text-right font-medium">{formatted}</div>;
+        },
+        enableHiding: false,
+      },
+      //actions
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+          const record = row.original;
+          return <ViewRecords record={record} />;
+        },
+      },
+    ],
     getCoreRowModel: getCoreRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -273,16 +344,38 @@ export function DataTableDemo({ records }: { records: Records[] }) {
       pagination,
     },
     filterFns: {
-      arrIncludesSome: (row, columnId, filterValue: string[]) => {
-        const value = row.getValue(columnId) as string;
-        return filterValue.includes(value);
-      },
+      arrIncludesSome: includesSome,
     },
   });
 
+  const pageCount = table.getPageCount();
+  const currentPage = table.getState().pagination.pageIndex;
+
+  const maxVisiblePages = 5;
+  let pageLinks = [];
+  let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(pageCount - 1, startPage + maxVisiblePages - 1);
+
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(0, endPage - maxVisiblePages + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pageLinks.push(
+      <PaginationItem key={i}>
+        <PaginationLink
+          isActive={currentPage === i}
+          onClick={() => table.setPageIndex(i)}
+        >
+          {i + 1}
+        </PaginationLink>
+      </PaginationItem>
+    );
+  }
+
   return (
-    <div className="w-full overflow-hidden flex flex-col px-2 justify-between h-full grow">
-      <div className="flex  py-4 flex-col gap-2 flex-start md:flex-row md:justify-between ">
+    <Card className="w-full overflow-hidden flex flex-col px-2 justify-between h-full grow">
+      <div className="flex py-4 flex-col gap-2 flex-start md:flex-row md:justify-between ">
         <div className="flex gap-2 items-center">
           <div className="flex flex-col md:flex-row grow md:items-center md:gap-2">
             <h1 className="text-center ">Start Date</h1>
@@ -295,11 +388,11 @@ export function DataTableDemo({ records }: { records: Records[] }) {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" className="bg-accent">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="bg-differ">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -317,11 +410,15 @@ export function DataTableDemo({ records }: { records: Records[] }) {
         </DropdownMenu>
       </div>
 
-      <ScrollArea className="rounded-md h-full grow" type="always" ref={tableRef} >
+      <ScrollArea
+        className="rounded-md grow"
+        type="always"
+        ref={tableScrollAreaRef}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} ref={headerRowRef}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -339,10 +436,11 @@ export function DataTableDemo({ records }: { records: Records[] }) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  ref={index === 0 ? firstDataRowRef : null}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -357,7 +455,7 @@ export function DataTableDemo({ records }: { records: Records[] }) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length} 
                   className="h-24 text-center"
                 >
                   No results.
@@ -366,7 +464,6 @@ export function DataTableDemo({ records }: { records: Records[] }) {
             )}
           </TableBody>
         </Table>
-        <div className="grow"></div>
       </ScrollArea>
 
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-4 ">
@@ -384,7 +481,57 @@ export function DataTableDemo({ records }: { records: Records[] }) {
           of {table.getFilteredRowModel().rows.length}
         </div>
 
-        <Pagination className="grow-0">
+        <Pagination className="flex md:hidden justify-center space-x-1">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => table.setPageIndex(0)}
+                className={
+                  table.getCanPreviousPage()
+                    ? ""
+                    : "pointer-events-none opacity-50"
+                }
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => table.previousPage()}
+                className={
+                  table.getCanPreviousPage()
+                    ? ""
+                    : "pointer-events-none opacity-50"
+                }
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink isActive className="pointer-events-none">
+                {table.getState().pagination.pageIndex + 1}
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => table.nextPage()}
+                className={
+                  table.getCanNextPage() ? "" : "pointer-events-none opacity-50"
+                }
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                className={
+                  table.getCanNextPage() ? "" : "pointer-events-none opacity-50"
+                }
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+
+        <Pagination className="hidden md:flex justify-center">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
@@ -396,20 +543,7 @@ export function DataTableDemo({ records }: { records: Records[] }) {
                 }
               />
             </PaginationItem>
-
-            {Array.from({ length: table.getPageCount() }).map((_, index) => {
-              return (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    isActive={table.getState().pagination.pageIndex === index}
-                    onClick={() => table.setPageIndex(index)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
-
+            {pageLinks} {/* Render the calculated page links */}
             <PaginationItem>
               <PaginationNext
                 onClick={() => table.nextPage()}
@@ -421,27 +555,8 @@ export function DataTableDemo({ records }: { records: Records[] }) {
           </PaginationContent>
         </Pagination>
       </div>
-    </div>
+    </Card>
   );
 }
 
-function processData(
-  records: Records[],
-  startDate: Date,
-  endDate: Date
-): Records[] {
-  if (startDate > endDate) return [];
-
-  records.forEach((record) => {
-    const date = record.dates;
-    const [hours, minutes, seconds] = record.times.split(":").map(Number);
-    date.setHours(hours);
-    date.setMinutes(minutes);
-    date.setSeconds(seconds);
-  });
-
-  return records.filter((record) => {
-    const recordDateTime = record.dates;
-    return recordDateTime >= startDate && recordDateTime <= endDate;
-  });
-}
+export default DataTableDemo;

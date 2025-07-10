@@ -36,7 +36,7 @@ const HomeSection = async () => {
         </div>
         <div className="cards flex md:w-1/2 flex-wrap justify-evenly text-center items-center md:min-w-96">
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-primary text-white font-semibold py-1 rounded-md">
+            <h3 className="bg-primary font-semibold py-1 rounded-md text-primary-foreground ">
               Budgeting
             </h3>
             <div
@@ -55,13 +55,13 @@ const HomeSection = async () => {
                 maskSize: "contain",
               }}
             />
-            <em className="text-sm">
+            <em className="text-sm text-foreground">
               Create personalized budgets to align with your financial goals and
               track your spending against them
             </em>
           </div>
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-primary rounded-sm text-white font-semibold py-1">
+            <h3 className="bg-primary rounded-sm  font-semibold py-1 text-primary-foreground ">
               Tracking
             </h3>
             <div
@@ -86,7 +86,7 @@ const HomeSection = async () => {
             </em>
           </div>
           <div className="w-44 h-[350px] my-5">
-            <h3 className="bg-primary rounded-md text-white font-semibold py-1">
+            <h3 className="bg-primary rounded-md  font-semibold py-1 text-primary-foreground ">
               Analytics
             </h3>
             <div

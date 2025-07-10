@@ -92,7 +92,7 @@ export function AddRecords({
     "Food & Drinks": [
       "Bar, Cafe",
       "Groceries",
-      "Resraurent, fast-food",
+      "Restaurent, fast-food",
       "Delivery",
     ],
     Shoping: [
@@ -237,11 +237,11 @@ export function AddRecords({
       } else {
         throw new Error();
       }
-    } catch (error) {
+    } catch (error:any) {
       toast({
         duration: 3000,
         variant: "destructive",
-        description: "Server error, please try again",
+        description: error.message,
       });
     } finally {
       setIsLoading(false);
@@ -257,7 +257,7 @@ export function AddRecords({
           <Plus size={16} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="">
+      <PopoverContent className="bg-popover">
         <Form {...form}>
           <ScrollArea className="p-3">
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -343,12 +343,12 @@ export function AddRecords({
                         }}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-card">
                             <SelectValue placeholder="Select Category" />
                           </SelectTrigger>
                         </FormControl>
                         <FormMessage />
-                        <SelectContent>
+                        <SelectContent className="bg-differ">
                           <SelectGroup>
                             {categories.map((category, i) => (
                               <SelectItem value={category} key={i}>
@@ -372,12 +372,15 @@ export function AddRecords({
                         disabled={!selectedCategory}
                       >
                         <FormControl>
-                          <SelectTrigger disabled={!Boolean(selectedCategory)}>
+                          <SelectTrigger
+                            disabled={!Boolean(selectedCategory)}
+                            className="bg-card"
+                          >
                             <SelectValue placeholder="Select Sub category" />
                           </SelectTrigger>
                         </FormControl>
                         <FormMessage />
-                        <SelectContent>
+                        <SelectContent className="bg-differ">
                           <SelectGroup>
                             {selectedCategory
                               ? subcategories[selectedCategory].map(
@@ -400,7 +403,11 @@ export function AddRecords({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Textarea placeholder="Description" {...field} />
+                        <Textarea
+                          placeholder="Description"
+                          {...field}
+                          className="bg-card"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -411,7 +418,11 @@ export function AddRecords({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Enter  payee name" {...field} />
+                        <Input
+                          placeholder="Enter  payee name"
+                          {...field}
+                          className="bg-card"
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -424,7 +435,7 @@ export function AddRecords({
                     return (
                       <FormItem>
                         <Popover open={open} onOpenChange={setOpen}>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild className="bg-card">
                             <FormControl>
                               <Button
                                 variant={"outline"}
@@ -443,7 +454,7 @@ export function AddRecords({
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
+                          <PopoverContent className="w-auto p-0 bg-differ">
                             <Calendar
                               mode="single"
                               selected={field.value}
@@ -476,13 +487,13 @@ export function AddRecords({
                           }
                         >
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="bg-card">
                               <SelectValue
                                 placeholder={new Date().getHours().toString()}
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent className="bg-differ">
                             {Array.from({ length: 24 }, (_, i) => i).map(
                               (index) => (
                                 <SelectItem value={String(index)} key={index}>
@@ -509,13 +520,13 @@ export function AddRecords({
                             field.onChange(Number(value))
                           }
                         >
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-card">
                             <SelectValue
                               placeholder={new Date().getHours().toString()}
                               {...field}
                             />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="bg-differ">
                             {Array.from({ length: 60 }, (_, i) => i).map(
                               (index) => (
                                 <SelectItem value={String(index)} key={index}>

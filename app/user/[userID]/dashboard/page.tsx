@@ -22,9 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import EditBalance from "@/app/components/EditBalance";
 import { AddRecords } from "@/app/components/AddRecords";
-import { Suspense } from "react";
 import PageRefreshToast from "@/app/components/PageRefreshToast";
-import { toast } from "@/hooks/use-toast";
 import SetBudget from "@/app/components/SetBudget";
 import { ScrollArea } from "@/components/ui/scroll-area";
 type BalanceChartData = { dates: string; balance: number };
@@ -132,10 +130,10 @@ export default async function Dashboard() {
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button size={"sm"} variant={"default"}>
-                            <SquarePen size={16} className="bg-foreground" />
+                            <SquarePen size={16}  />
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="p-3">
+                        <PopoverContent className="p-3 ">
                           <EditBalance
                             userId={userDetails.id}
                             balance={userDetails.balance}
@@ -157,7 +155,7 @@ export default async function Dashboard() {
                     <CardTitle>₹ {totalIncome?.[0]?.sum || 0}</CardTitle>
                   </CardHeader>
                 </Card>
-                <Card>
+                <Card >
                   <CardHeader>
                     <CardDescription className="flex justify-between items-center">
                       Expense

@@ -114,7 +114,7 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="First Name" {...field} />
+                    <Input placeholder="First Name" {...field} className="bg-card" />
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>
@@ -128,7 +128,7 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                   <FormLabel>Last Name</FormLabel>
 
                   <FormControl>
-                    <Input placeholder="Last Name" {...field} />
+                    <Input placeholder="Last Name" {...field} className="bg-card"/>
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>
@@ -141,17 +141,17 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email" {...field} className="bg-card"/>
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>
               )}
             />
-            <DialogFooter className="mt-3 flex-col gap-2">
+            <DialogFooter className="mt-3 flex-col gap-2 md:gap-0">
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="text-foreground"
+                className="text-primary-foreground"
               >
                 {isLoading ? (
                   <>
@@ -162,7 +162,7 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                   "Submit"
                 )}
               </Button>
-              <DialogClose className="  inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground">
+              <DialogClose className="  inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-card hover:bg-muted hover:text-accent-foreground">
                 Cancel
               </DialogClose>
             </DialogFooter>

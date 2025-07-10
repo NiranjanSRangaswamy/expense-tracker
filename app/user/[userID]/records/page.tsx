@@ -27,7 +27,7 @@ const page = async () => {
   }
   return (
     <section className="statistics grow w-full md:h-screen overflow-x-hidden">
-      <div className="w-11/12 md:w-full mx-auto h-full flex flex-col">
+      <div className="w-11/12 md:w-full mx-auto h-full flex flex-col p-3">
         <div className="flex justify-between md:w-11/12 mx-auto h-12 md:h-16 items-center">
           <h1 className="text-xl md:text-2xl">Records</h1>
           <div className="hidden md:inline-block md:py-2">

@@ -56,7 +56,7 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
     };
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/budget`,
+        `/api/user/budget`,
         data
       );
       if (res.status == 201) {
@@ -69,11 +69,11 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
       } else {
         throw Error();
       }
-    } catch (error) {
+    } catch (error:any) {
       toast({
         duration: 3000,
         variant: "destructive",
-        description: "Server error, Please try again",
+        description: error.message,
       });
     } finally {
       setIsLoading(false);
@@ -90,11 +90,11 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-3">
-        <div className="bg-card rounded-lg p-2 text-center">
-          <h1 className="m-2">Set Budget</h1>
+        <div className=" rounded-lg ">
+          <h1 className="">Set Budget</h1>
           <Form {...form}>
             <form
-              className=" flex gap-2"
+              className=" flex flex-col gap-2"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField
@@ -104,7 +104,7 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className=" bg-popover"
+                        className=" bg-card"
                         type="number"
                         {...field}
                         placeholder={budget ? String(budget) : '0'}

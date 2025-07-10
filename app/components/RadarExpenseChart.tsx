@@ -39,15 +39,15 @@ export function RadarExpenseChart({ userRecords }: { userRecords: Records[] }) {
       <div className=" h-full flex flex-col">
         <CardHeader className="items-center pb-4 gap-2">
           <CardTitle>Expense by category</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-foreground">
             <Select value={duration} onValueChange={setDuration}>
               <SelectTrigger
-                className="w-[160px] rounded-lg sm:ml-auto"
+                className="w-[160px] rounded-lg sm:ml-auto bg-accent"
                 aria-label="Select a value"
               >
-                <SelectValue placeholder="Last 3 months" />
+                <SelectValue placeholder="Last 3 months" className="" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl">
+              <SelectContent className="rounded-xl bg-differ">
                 <SelectItem value="7" className="rounded-lg">
                   Last 7 days
                 </SelectItem>

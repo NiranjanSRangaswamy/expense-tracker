@@ -62,7 +62,7 @@ export default function EditBalance({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4">
+    <div className="flex flex-col justify-center items-center gap-2">
       <button
         className="flex flex-col justify-center items-center bg-card rounded-lg p-2"
         onClick={() => {
@@ -136,22 +136,22 @@ export function EditInitialBalance({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" flex flex-col gap-2">
         <FormField
           control={form.control}
           name="newBalance"
           render={({ field }) => (
-            <FormItem className="my-3">
-              <FormLabel>Enter initial balance</FormLabel>
+            <FormItem className="">
+              <FormLabel className="text-center">Enter initial balance</FormLabel>
               <FormControl>
-                <Input placeholder="new balance" {...field} type="number" />
+                <Input placeholder="new balance" {...field} type="number" className="bg-card"/>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <PopoverClose asChild>
-          <Button type="submit" className="w-full mt-3" disabled={isLoading}>
+          <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -226,22 +226,26 @@ export function AdjustByRecord({
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" flex flex-col gap-2">
         <FormField
           control={form.control}
           name="newBalance"
           render={({ field }) => (
-            <FormItem className="my-3">
+            <FormItem className="">
               <FormLabel>Enter your new balance</FormLabel>
               <FormControl>
-                <Input placeholder="new balance" {...field} />
+                <Input
+                  placeholder="new balance"
+                  {...field}
+                  className="bg-card"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <PopoverClose asChild>
-          <Button type="submit" className="w-full mt-3" disabled={isLoading}>
+          <Button type="submit" className="w-full " disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

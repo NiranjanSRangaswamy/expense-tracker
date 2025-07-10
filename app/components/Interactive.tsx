@@ -99,12 +99,12 @@ export function Interactive({
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto"
+            className="w-[160px] rounded-lg sm:ml-auto bg-accent"
             aria-label="Select a value"
           >
             <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl">
+          <SelectContent className="rounded-xl bg-differ">
             <SelectItem value="7d" className="rounded-lg">
               Last 7 days
             </SelectItem>

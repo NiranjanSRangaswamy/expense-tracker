@@ -124,6 +124,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
                             placeholder="Enter Your Old Password"
                             {...field}
                             type="password"
+                            className="bg-card"
                           />
                         </FormControl>
                         <FormMessage className="pl-3" />
@@ -141,6 +142,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
                             type="password"
                             {...field}
                             placeholder="Enter New Password"
+                            className="bg-card"
                           />
                         </FormControl>
                         <FormMessage className="pl-3" />
@@ -158,6 +160,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
                             type="password"
                             {...field}
                             placeholder="Confirm Your New Password"
+                            className="bg-card"
                           />
                         </FormControl>
                         <FormMessage className="pl-3" />
@@ -165,7 +168,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
                     )}
                   />
                 </div>
-                <DialogFooter className="mt-3 flex-col gap-2">
+                <DialogFooter className="mt-3 flex-col gap-2 md:gap-0">
                   <Button type="submit" className="" disabled={isLoading}>
                     {isLoading ? (
                       <>
@@ -180,7 +183,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
                     onClick={() => {
                       form.reset();
                     }}
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-card hover:bg-muted hover:text-accent-foreground"
                   >
                     Cancel
                   </DialogClose>

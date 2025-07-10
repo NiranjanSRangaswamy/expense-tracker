@@ -33,10 +33,10 @@ const DateFilter = ({ date, setDate }: { date: Date; setDate: Function}) => {
           <Input
             readOnly
             value={format(date, "yyyy-MM-dd")}
-            onClick={() => setOpen(true)} 
+            onClick={() => setOpen(true)} className="bg-accent"
           />
         </PopoverTrigger>
-        <PopoverContent  side="bottom" align="center" className="w-auto">
+        <PopoverContent  side="bottom" align="center" className="w-auto bg-differ">
           <Calendar
             mode="single"
             selected={date}

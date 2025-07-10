@@ -102,9 +102,9 @@ export function SignUpCard() {
           <strong>Sign Up</strong>
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-primary-foreground max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-background max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle> Sign UP</DialogTitle>
+          <DialogTitle> Sign Up</DialogTitle>
           <DialogDescription>
             Enter your details below to create your account
           </DialogDescription>
@@ -118,7 +118,11 @@ export function SignUpCard() {
                 <FormItem className="my-1">
                   <FormLabel className="">First name</FormLabel>
                   <FormControl>
-                    <Input placeholder="First name" {...field} />
+                    <Input
+                      placeholder="First name"
+                      {...field}
+                      className="bg-card"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -131,7 +135,11 @@ export function SignUpCard() {
                 <FormItem className="my-1">
                   <FormLabel>Last name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Last name" {...field} />
+                    <Input
+                      placeholder="Last name"
+                      {...field}
+                      className="bg-card"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +152,7 @@ export function SignUpCard() {
                 <FormItem className="my-1">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email" {...field} className="bg-card" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -157,7 +165,12 @@ export function SignUpCard() {
                 <FormItem className="my-1">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Password" {...field} type="password" />
+                    <Input
+                      placeholder="Password"
+                      {...field}
+                      type="password"
+                      className="bg-card"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -174,6 +187,7 @@ export function SignUpCard() {
                       placeholder="Confirm password"
                       {...field}
                       type="password"
+                      className="bg-card"
                     />
                   </FormControl>
                   <FormMessage />

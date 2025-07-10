@@ -254,9 +254,7 @@ const EditRecords = ({ record }: { record: Records }) => {
       </DialogTrigger>
       <DialogPrimitive.Portal>
         <DialogOverlay>
-          <DialogPrimitive.Content
-            className="fixed left-[50%] top-[50%] z-50 grid w-4/5 max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg"
-          >
+          <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-50 grid w-4/5 max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg">
             <DialogHeader>
               <DialogTitle>Edit Record</DialogTitle>
               <DialogDescription>
@@ -265,7 +263,7 @@ const EditRecords = ({ record }: { record: Records }) => {
             </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <ScrollArea className="p-3">
+                <ScrollArea className="">
                   <div className="flex flex-col gap-2 max-h-[75vh] m-1">
                     <FormField
                       name="transType"
@@ -277,15 +275,15 @@ const EditRecords = ({ record }: { record: Records }) => {
                             defaultValue={field.value}
                             onValueChange={field.onChange}
                           >
-                            <div className="flex flex-col gap-2 w-1/2">
+                            <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                               <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-card" >
                                   <SelectValue placeholder="Transaction Type" />
                                 </SelectTrigger>
                               </FormControl>
                               <FormMessage />
                             </div>
-                            <SelectContent>
+                            <SelectContent className="bg-differ">
                               <SelectGroup>
                                 <SelectItem value="income">Income</SelectItem>
                                 <SelectItem value="expense">Expense</SelectItem>
@@ -301,7 +299,7 @@ const EditRecords = ({ record }: { record: Records }) => {
                       render={({ field }) => (
                         <FormItem className="flex justify-between items-center">
                           <FormLabel>Amount</FormLabel>
-                          <div className="flex flex-col gap-2 w-1/2">
+                          <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                             <FormControl className="">
                               <Input
                                 type="number"
@@ -334,15 +332,15 @@ const EditRecords = ({ record }: { record: Records }) => {
                               form.setValue("subCategory", "");
                             }}
                           >
-                            <div className="flex flex-col gap-2 w-1/2">
+                            <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                               <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-card" >
                                   <SelectValue placeholder="Select Category" />
                                 </SelectTrigger>
                               </FormControl>
                               <FormMessage />
                             </div>
-                            <SelectContent>
+                            <SelectContent className="bg-differ">
                               <SelectGroup>
                                 {categories.map((category, i) => (
                                   <SelectItem value={category} key={i}>
@@ -362,21 +360,21 @@ const EditRecords = ({ record }: { record: Records }) => {
                         <FormItem className="flex justify-between items-center">
                           <FormLabel>Sub Category</FormLabel>
                           <Select
-                            value={field.value || ""}
+                            defaultValue={field.value}
                             onValueChange={field.onChange}
                             disabled={!selectedCategory}
                           >
-                            <div className="flex flex-col gap-2 w-1/2">
+                            <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                               <FormControl>
                                 <SelectTrigger
-                                  disabled={!Boolean(selectedCategory)}
+                                  disabled={!Boolean(selectedCategory)} className="bg-card"
                                 >
                                   <SelectValue placeholder="Select Sub category" />
                                 </SelectTrigger>
                               </FormControl>
                               <FormMessage />
                             </div>
-                            <SelectContent>
+                            <SelectContent className="bg-differ">
                               <SelectGroup>
                                 {selectedCategory
                                   ? subcategories[selectedCategory].map(
@@ -399,9 +397,9 @@ const EditRecords = ({ record }: { record: Records }) => {
                       render={({ field }) => (
                         <FormItem className="flex justify-between items-center">
                           <FormLabel>Note</FormLabel>
-                          <div className="flex flex-col gap-2 w-1/2">
+                          <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                             <FormControl>
-                              <Textarea placeholder="Description" {...field} />
+                              <Textarea placeholder="Description" {...field} className="bg-card"/>
                             </FormControl>
                             <FormMessage />
                           </div>
@@ -414,11 +412,12 @@ const EditRecords = ({ record }: { record: Records }) => {
                       render={({ field }) => (
                         <FormItem className="flex justify-between items-center">
                           <FormLabel>Payee / Payer</FormLabel>
-                          <div className="flex flex-col gap-2 w-1/2">
+                          <div className="flex flex-col gap-2 w-3/5 md:w-1/2">
                             <FormControl>
                               <Input
                                 placeholder="Enter  payee name"
                                 {...field}
+                                className="bg-card"
                               />
                             </FormControl>
                             <FormMessage />
@@ -438,13 +437,16 @@ const EditRecords = ({ record }: { record: Records }) => {
                               onOpenChange={setOpen}
                               modal={true}
                             >
-                              <PopoverTrigger asChild className="w-1/2">
-                                <FormControl className="w-1/2">
+                              <PopoverTrigger
+                                asChild
+                                className=""
+                              >
+                                <FormControl className="">
                                   <Button
                                     variant={"outline"}
                                     onClick={() => setOpen(!open)}
                                     className={cn(
-                                      "w-1/2 justify-start text-left font-normal",
+                                      "w-3/5 md:w-1/2 justify-start text-left font-normal bg-card",
                                       !field.value && "text-muted-foreground"
                                     )}
                                   >
@@ -468,6 +470,7 @@ const EditRecords = ({ record }: { record: Records }) => {
                                     date < new Date("1900-01-01")
                                   }
                                   initialFocus
+                                  className="bg-differ"
                                 />
                               </PopoverContent>
                             </Popover>
@@ -477,7 +480,7 @@ const EditRecords = ({ record }: { record: Records }) => {
                     />
                     <div className="time flex justify-between items-center">
                       <p>Time</p>
-                      <div className="flex w-1/2">
+                      <div className="flex w-3/5 md:w-1/2 gap-1">
                         <FormField
                           name="hour"
                           control={form.control}
@@ -490,13 +493,11 @@ const EditRecords = ({ record }: { record: Records }) => {
                                 }
                               >
                                 <FormControl className="">
-                                  <SelectTrigger>
-                                    <SelectValue
-                                    {...field}
-                                    />
+                                  <SelectTrigger className="bg-card">
+                                    <SelectValue {...field} />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent>
+                                <SelectContent className="bg-differ">
                                   {Array.from({ length: 24 }, (_, i) => i).map(
                                     (index) => (
                                       <SelectItem
@@ -528,12 +529,10 @@ const EditRecords = ({ record }: { record: Records }) => {
                                   field.onChange(Number(value))
                                 }
                               >
-                                <SelectTrigger>
-                                  <SelectValue
-                                    {...field}
-                                  />
+                                <SelectTrigger className="bg-card">
+                                  <SelectValue {...field} />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-differ">
                                   {Array.from({ length: 60 }, (_, i) => i).map(
                                     (index) => (
                                       <SelectItem
@@ -553,8 +552,8 @@ const EditRecords = ({ record }: { record: Records }) => {
                     </div>
                   </div>
                 </ScrollArea>
-                <DialogFooter>
-                  <Button type="submit" >
+                <DialogFooter className=" mt-3 flex-col gap-2 md:gap-0">
+                  <Button type="submit">
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -564,7 +563,9 @@ const EditRecords = ({ record }: { record: Records }) => {
                       "Submit"
                     )}
                   </Button>
-                  <DialogClose>Cancel</DialogClose>
+                  <DialogClose className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-card hover:bg-muted hover:text-accent-foreground">
+                    Cancel
+                  </DialogClose>
                 </DialogFooter>
               </form>
             </Form>

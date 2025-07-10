@@ -24,9 +24,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Sign up successfull", id },{
         status: 200,
         headers: {
-          "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-age=3600;`,
-          "Content-Type": "applicaton/json",
-        },
+          "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Lax`,
+          "Content-Type": "application/json",
+        }        
       }
     );
   } catch (error: any) {

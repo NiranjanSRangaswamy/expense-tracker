@@ -20,10 +20,11 @@ export async function POST(request: Request) {
     const verified = await bcrypt.compare(data.password, res[0].password);
     if (verified) {
       const token = sign(res[0].id as string, process.env.JWT_SECRET as string);
-      return NextResponse.json({ message: "Login successful", userID: res[0].id },
+      return NextResponse.json(
+        { message: "Login successful", userID: res[0].id },
         {
           headers: {
-            "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=3600`,
+            "Set-Cookie": `token=${token}; HttpOnly; Path=/; Max-Age=3600; SameSite=Lax`,
             "Content-Type": "application/json",
           },
         }

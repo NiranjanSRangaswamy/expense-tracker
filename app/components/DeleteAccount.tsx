@@ -69,14 +69,18 @@ const DeleteAccount = ({userId}:{userId:number| undefined}) => {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
+              <AlertDialogDescription className='text-foreground'>
                 This action cannot be undone. This will permanently delete your
                 account and remove your data from our servers.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className='flex-col'>
-              <AlertDialogAction onClick={handleClick}>Confirm</AlertDialogAction>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogFooter className="flex-col md:gap-0">
+              <AlertDialogAction onClick={handleClick}>
+                Confirm
+              </AlertDialogAction>
+              <AlertDialogCancel className="bg-card hover:bg-muted">
+                Cancel
+              </AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
