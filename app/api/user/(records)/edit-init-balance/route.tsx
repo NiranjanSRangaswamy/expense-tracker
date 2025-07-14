@@ -1,16 +1,14 @@
 import { getClient } from "@/lib/db"; 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers"; 
-import { verify, TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"; 
+import { verify } from "jsonwebtoken"; 
 import { PoolClient } from "pg";
-import { query } from "@/lib/db";
 
 interface BalanceUpdateRequestData {
   value: number; 
 }
 
 export async function POST(req: Request) {
-
   let client: PoolClient | null = null;
   let data: BalanceUpdateRequestData;
   let userId: string;
@@ -28,6 +26,7 @@ export async function POST(req: Request) {
       );
     }
 
+
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
 
@@ -39,7 +38,8 @@ export async function POST(req: Request) {
     }
 
     userId = verify(token.value,process.env.JWT_SECRET as string) as string;
-    if (userId) throw new Error("Invalid token payload: User ID not found.");
+    if (!userId) throw new Error("Invalid token payload: User ID not found.");
+
 
     client = await getClient();
     await client.query("BEGIN"); 

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { TrendingUp } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -8,12 +7,10 @@ import {
   ResponsiveContainer,
   XAxis,
 } from "recharts";
-import { Line, LineChart } from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card1";
@@ -89,8 +86,8 @@ function getChartData(balanceData: BalanceChartData[]): BalanceChartData[] {
   const extendedData = [];
   const today = new Date();
   const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  const startDate = new Date(balanceData[0].dates); // first date of the month or last date of recorded balance of last month
-  const endDate = new Date(lastDay); // End date of current month
+  const startDate = new Date(balanceData[0].dates); 
+  const endDate = new Date(lastDay); 
   let lastBalance = null;
   for (
     let date = startDate;
@@ -104,11 +101,9 @@ function getChartData(balanceData: BalanceChartData[]): BalanceChartData[] {
       lastBalance = existingData.balance;
       extendedData.push(existingData);
     } else {
-      // If no data for the current date, use the last known balance
       if (lastBalance !== null) {
         extendedData.push({ dates: currentDate, balance: lastBalance });
       }
-      // If there's no last balance then you are not displaying graph, so this is not required
     }
   }
   return extendedData;

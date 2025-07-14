@@ -67,13 +67,17 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
           description: "Budget set successfully",
         });
       } else {
-        throw Error();
+        throw Error('unknown error');
       }
     } catch (error:any) {
+      let errorMessage = error.message;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.message;
+      }
       toast({
         duration: 3000,
         variant: "destructive",
-        description: error.message,
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -110,7 +114,6 @@ const SetBudget = ({ budget }: { budget: number | undefined }) => {
                         placeholder={budget ? String(budget) : '0'}
                         onChange={(e) => {
                           const val = e.target.value;
-                          // Allow empty string, but convert to number if there's input
                           field.onChange(val === "" ? 0 : Number(val));
                         }}
                         value={field.value === 0 ? "" : field.value}

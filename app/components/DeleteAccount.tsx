@@ -14,7 +14,7 @@ const DeleteAccount = ({userId}:{userId:number| undefined}) => {
 
   async function handleClick() {
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/user-details`);
+      const res = await axios.delete(`/api/user/user-details`);
       if (res.status === 200 || res.status === 204) {
         toast({
           duration: 3000,

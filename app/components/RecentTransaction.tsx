@@ -2,14 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BanknoteArrowDown, BanknoteArrowUp, Clock } from "lucide-react";
+import { BanknoteArrowDown, BanknoteArrowUp} from "lucide-react";
 import React from "react";
 
 const RecentTransaction = ({ records }: { records: Records[] }) => {

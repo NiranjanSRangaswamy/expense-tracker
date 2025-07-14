@@ -1,4 +1,3 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
 
 import { verify } from "jsonwebtoken";
@@ -7,7 +6,6 @@ import ToastComponent from "@/app/components/ToastComponent";
 import { query } from "@/lib/db";
 import PageRefreshToast from "@/app/components/PageRefreshToast";
 import { Interactive } from "./Interactive";
-import { Card } from "@/components/ui/card";
 import { RadarExpenseChart } from "./RadarExpenseChart";
 import RecentTransaction from "./RecentTransaction";
 

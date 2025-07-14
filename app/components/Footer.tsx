@@ -12,23 +12,8 @@ export function Footer() {
             patterns.
           </em>
         </h3>
-        <div className="flex gap-5 p-3 font-semibold">
-          <Link href={"/about"}>
-            <p>About</p>
-          </Link>
-          <Link href={"/contact"}>
-            <p>Contact</p>
-          </Link>
-          <Link href={"/help"}>
-            <p>Help</p>
-          </Link>
-        </div>
-        <div className="flex justify-center w-full flex-wrap md:justify-between py-3">
-          <div className="flex gap-3">
-            <p>Privacy policy</p>
-            <p>Terms & conditions</p>
-          </div>
-          <p>@2024 - All rights reserved</p>
+        <div className="flex justify-center w-full flex-wrap py-3">
+          <p>@2025 - All rights reserved</p>
         </div>
       </div>
     </section>

@@ -33,7 +33,7 @@ const TopNav = ({ userData }: { userData: UserDetails }) => {
           <SheetTrigger>
             <Menu />
           </SheetTrigger>
-          <SheetContent side={"left"} className="w-72 flex flex-col h-screen">
+          <SheetContent side={"left"} className="w-72 flex flex-col h-dvh">
             <SheetHeader>
               <SheetTitle className="flex justify-center">
                 <Avatar>
@@ -87,16 +87,6 @@ const TopNav = ({ userData }: { userData: UserDetails }) => {
                     className="capitalize w-full text-left text-md h-16"
                   >
                     <UserCog className="mr-3" /> Settings
-                  </Button>
-                </Link>
-              </SheetClose>
-              <SheetClose asChild>
-                <Link href={`/`} className="w-full ">
-                  <Button
-                    variant={"ghost"}
-                    className="capitalize w-full text-left text-md h-16"
-                  >
-                    <UserCog className="mr-3" /> Home
                   </Button>
                 </Link>
               </SheetClose>

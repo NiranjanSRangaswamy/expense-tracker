@@ -5,8 +5,8 @@
 
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  /* color: var(--foreground);
+  background: var(--background); */
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -27,7 +27,8 @@ body {
 }
 
 @layer base {
-  :root {
+
+:root{
     --background: 205 100% 85% ;
     --foreground: 220 30% 20% ; 
     --card: 205 100% 95%; 
@@ -61,7 +62,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */  
   }
-  .dark {
+
+.dark {
     --background: 199 65% 10% ;
     --foreground: 210 40% 98% ;
     --card: 198 52% 13%;
@@ -95,7 +97,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */  
   }
-  .pink {
+
+.pink {
     --background: 340 100% 90% ;            
     --foreground: 345 20% 15% ;                       
     --card: 340 100% 98%;
@@ -106,7 +109,6 @@ body {
     --primary-foreground: 0 0% 100%;               
     --secondary: 340 50% 88%;                         
     --secondary-foreground: 345 20% 15%;
-    --muted: 340 40% 90%;
     --muted-foreground: 345 15% 40%;
     --accent: 340 80% 97%;
     --accent-foreground: 345 20% 15%;
@@ -130,12 +132,13 @@ body {
     --chart-11: 75 87% 59%;         /* Lime */
   
   }
-  .darkpink {
+
+.dark.pink {
     --background: 345 45% 14% ;               
     --foreground: 345 60% 92% ; 
     --card: 345 38% 16%;
     --card-foreground: 345 60% 92%;
-    --popover: 345 25% 5%;
+    --popover: 345 40% 10%;
     --popover-foreground: 345 60% 92%;
     --primary: 346.8 77.2% 49.8%;                       
     --primary-foreground: 345 30% 10%;                
@@ -164,7 +167,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .orange {
+
+.orange {
     --background: 35 100% 80% ;          
     --foreground: 30 20% 15% ;                         
     --card: 35 100% 97%;
@@ -198,7 +202,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .darkorange {
+
+.dark.orange {
     --background: 24 70% 14% ;  
     --foreground: 35 80% 88% ;                          
     --card: 30 58% 18%;
@@ -232,7 +237,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .green {
+
+.green {
     --background: 157 59% 75% ;
     --foreground: 240 10% 3.9% ;
     --card: 144 100% 95%;
@@ -265,7 +271,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .darkgreen {
+
+.dark.green {
     --background: 157 45% 14% ; 
     --foreground: 140 30% 95% ;          
     --card: 157 33% 18%;
@@ -299,7 +306,8 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .yellow {
+
+.yellow {
     --background: 44 100% 88% ;                
     --foreground: 30 20% 15% ;                  
     --card: 47 100% 97%;
@@ -333,14 +341,15 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .darkyellow {
+
+.dark.yellow {
     --background: 48 80% 12% ;   
     --foreground: 45 70% 88% ;      
     --card: 48 68% 16%;
     --card-foreground: 45 70% 88%;
     --popover: 44 80% 8%;
     --popover-foreground: 45 70% 88%;
-    --primary: 48 96% 40%;                
+    --primary: 48 96% 53%;                
     --primary-foreground: 44 30% 12%;          
     --secondary: 44 25% 20%;
     --secondary-foreground: 45 70% 88%;
@@ -367,12 +376,13 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .violet {
+
+.violet {
     --background: 258 95% 93% ;        
     --foreground: 258 30% 15% ;      
     --card: 258 100% 97%;
     --card-foreground: 258 30% 15%;
-    --popover: 258 100% 96%;
+    --popover: 258 95% 85%;
     --popover-foreground: 258 30% 15%;
     --primary: 262.1 83.3% 57.8%;              
     --primary-foreground: 258 100% 98%;      
@@ -401,12 +411,13 @@ body {
     --chart-10: 231 61% 56%;        /* Indigo */
     --chart-11: 75 87% 59%;         /* Lime */
   }
-  .darkviolet {
+
+.dark.violet {
     --background: 262 40% 10% ;    
     --foreground: 258 60% 90% ;       
     --card: 262 35% 13%;
     --card-foreground: 258 60% 90%;
-    --popover: 262 30% 7%;
+    --popover: 262 60% 10%;
     --popover-foreground: 258 60% 90%;
     --primary: 262.1 83.3% 57.8%;              
     --primary-foreground: 258 100% 97%;      

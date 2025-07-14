@@ -219,7 +219,7 @@ const EditRecords = ({ record }: { record: Records }) => {
     };
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/edit-record`,
+        `/api/user/edit-record`,
         data
       );
       console.log("res");
@@ -234,6 +234,10 @@ const EditRecords = ({ record }: { record: Records }) => {
         throw new Error();
       }
     } catch (error: any) {
+      let errorMessage = error.message;
+      if(axios.isAxiosError(error)){
+        errorMessage = error.response?.data.message
+      }
       toast({
         duration: 3000,
         variant: "destructive",

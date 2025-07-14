@@ -22,7 +22,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { JwtPayload } from "jsonwebtoken";
-import { useEffect } from "react";
 
 export function ProfileImage({ userId }: { userId: string | JwtPayload }) {
   const router = useRouter();
@@ -33,9 +32,14 @@ export function ProfileImage({ userId }: { userId: string | JwtPayload }) {
       await axios.post("/api/auth/logout");
       router.refresh();
     } catch (error: any) {
+      let errorMessage = error.message;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.message;
+      }
       toast({
+        duration: 3000,
         variant: "destructive",
-        description: error.response.data.message,
+        description: errorMessage,
       });
     }
   };

@@ -26,9 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import ToastComponent from "./ToastComponent";
 import { toast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 
 const userSchema = z.object({
   firstName: z
@@ -67,21 +65,21 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
         lastName: values.lastName,
         email: values.email,
       };
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/user-details`,
-        data
-      );
+      const res = await axios.put(`/api/user/user-details`, data);
       if (res.status !== 200) throw new Error("database error");
       toast({
         duration: 3000,
         description: "Data modified successfully",
       });
     } catch (error: any) {
-      console.log(error.data)
+      let errorMessage = error.message;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.message;
+      }
       toast({
         duration: 3000,
         variant: "destructive",
-        description: error.message,
+        description: errorMessage,
       });
     } finally {
       setIsOpen(false);
@@ -114,7 +112,11 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="First Name" {...field} className="bg-card" />
+                    <Input
+                      placeholder="First Name"
+                      {...field}
+                      className="bg-card"
+                    />
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>
@@ -128,7 +130,11 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                   <FormLabel>Last Name</FormLabel>
 
                   <FormControl>
-                    <Input placeholder="Last Name" {...field} className="bg-card"/>
+                    <Input
+                      placeholder="Last Name"
+                      {...field}
+                      className="bg-card"
+                    />
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>
@@ -141,7 +147,7 @@ const EditUserInfo = ({ userDetails }: { userDetails: UserDetails | null }) => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} className="bg-card"/>
+                    <Input placeholder="Email" {...field} className="bg-card" />
                   </FormControl>
                   <FormMessage className="pl-3" />
                 </FormItem>

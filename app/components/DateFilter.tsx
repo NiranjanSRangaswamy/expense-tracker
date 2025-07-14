@@ -16,7 +16,7 @@ const DateFilter = ({ date, setDate }: { date: Date; setDate: Function}) => {
     const handleOpenChange = (openState: boolean) => {
     setOpen(openState);
     if (openState) {
-      setDisplayMonth(date); // show selected date's month when opening
+      setDisplayMonth(date); 
     }
   };
 
@@ -41,8 +41,8 @@ const DateFilter = ({ date, setDate }: { date: Date; setDate: Function}) => {
             mode="single"
             selected={date}
             onSelect={handleSelect}
-            month={displayMonth} // only set month initially
-            onMonthChange={setDisplayMonth} // keep internal month in sync
+            month={displayMonth} 
+            onMonthChange={setDisplayMonth} 
           />
         </PopoverContent>
       </Popover>

@@ -1,6 +1,6 @@
 import { getClient } from "@/lib/db";
 import { compare, hash } from "bcrypt";
-import { verify, TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { PoolClient } from "pg";
@@ -32,7 +32,7 @@ export async function PUT(request: Request) {
     } catch (jwtError: any) {
       throw jwtError;
     }
-
+    
     client = await getClient();
     await client.query("BEGIN");
 
@@ -43,7 +43,7 @@ export async function PUT(request: Request) {
     const hashedPassword = result.rows[0].password;
     const isOldPasswordVerified = await compare(data.oldPassword,hashedPassword );
 
-    if (!isOldPasswordVerified) throw new Error("Invalid old password provided.")
+    if (!isOldPasswordVerified) throw new Error("Wrong password.");
 
     const newHashedPassword = await hash(data.newPassword, 10);
 
@@ -56,15 +56,13 @@ export async function PUT(request: Request) {
     return NextResponse.json({ message: "Password changed successfully." },{ status: 200 });
     
   } catch (error: any) {
-    console.error("Change password failed:", error);
-
     if (client) {
       await client.query("ROLLBACK");
     }
 
     let errorMessage = "An unexpected server error occurred.";
     let statusCode = 500;
-    if (error.message === "Invalid old password provided.") {
+    if (error.message === "Wrong password.") {
       errorMessage = error.message;
       statusCode = 400;
     }

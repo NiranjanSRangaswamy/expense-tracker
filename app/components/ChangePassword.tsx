@@ -64,7 +64,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
     setIsLoading(true);
     try {
       const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/edit-password`,
+        `/api/auth/edit-password`,
         values
       );
       if (res.status == 200) {
@@ -75,8 +75,7 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
       }
       form.reset();
       setIsOpen(false);
-    } catch (error) {
-      let errorMessage = "An unexpected error occurred. Please try again.";
+    } catch (error:any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
@@ -86,6 +85,13 @@ const ChangePassword = ({ userId }: { userId: number | undefined }) => {
             form.setError("oldPassword", { message });
           }
         }
+      }
+      else{
+        toast({
+          duration: 3000,
+          variant: 'default',
+          description: error.message
+        })
       }
     } finally {
       setIsLoading(false);

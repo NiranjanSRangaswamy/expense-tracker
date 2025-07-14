@@ -112,7 +112,7 @@ function processData(
     });
 }
 
-export function DataTableDemo({ records }: { records: Records[] }) {
+export function DataTable({ records }: { records: Records[] }) {
   const tableScrollAreaRef = useRef<HTMLDivElement | null>(null); 
   const headerRowRef = useRef<HTMLTableRowElement | null>(null); 
   const firstDataRowRef = useRef<HTMLTableRowElement | null>(null); 
@@ -543,7 +543,7 @@ export function DataTableDemo({ records }: { records: Records[] }) {
                 }
               />
             </PaginationItem>
-            {pageLinks} {/* Render the calculated page links */}
+            {pageLinks} 
             <PaginationItem>
               <PaginationNext
                 onClick={() => table.nextPage()}
@@ -559,4 +559,3 @@ export function DataTableDemo({ records }: { records: Records[] }) {
   );
 }
 
-export default DataTableDemo;

@@ -1,15 +1,14 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
-import { string, z } from "zod";
+import {  z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { useForm, Controller } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -36,13 +35,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createRef, useEffect, useState } from "react";
-import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
-import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { SelectGroup } from "@radix-ui/react-select";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { FaPray } from "react-icons/fa";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const recordSchema = z.object({
   transType: z.enum(["income", "expense"]),
@@ -209,7 +206,7 @@ export function AddRecords({
     const newBalance = balance + values.value;
     date.setHours(values.hour);
     date.setMinutes(values.minute);
-    date.setSeconds(0)
+    date.setSeconds(0);
     const data = {
       userId,
       transType: values.transType,
@@ -223,10 +220,7 @@ export function AddRecords({
       note: values.note,
     };
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/add-record`,
-        data
-      );
+      const res = await axios.post(`/api/user/add-record`, data);
       if (res.status == 200) {
         form.reset();
         toast({
@@ -237,7 +231,11 @@ export function AddRecords({
       } else {
         throw new Error();
       }
-    } catch (error:any) {
+    } catch (error: any) {
+      let errorMessage = error.message;
+      if(axios.isAxiosError(error)){
+        errorMessage = error.response?.data.message;
+      }
       toast({
         duration: 3000,
         variant: "destructive",
@@ -320,6 +318,7 @@ export function AddRecords({
                           type="number"
                           className=" h-20 text-6xl text-right p-2 bg-card"
                           {...field}
+                          onFocus={(e) => e.target.select()} // <-- This is the new, robust change
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
                           }
@@ -540,16 +539,26 @@ export function AddRecords({
                     )}
                   />
                 </div>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Please wait...
-                    </>
-                  ) : (
-                    "Submit"
-                  )}
-                </Button>
+                <div className="flex flex-col  gap-2">
+                  <Button type="submit" disabled={isLoading} className="grow">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Please wait...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  <PopoverClose
+                    onClick={() => {
+                      form.reset();
+                    }}
+                    className="inline-flex grow items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 border border-input bg-card hover:bg-muted hover:text-accent-foreground"
+                  >
+                    Cancel
+                  </PopoverClose>
+                </div>
               </div>
             </form>
           </ScrollArea>

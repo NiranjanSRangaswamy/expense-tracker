@@ -5,8 +5,7 @@ import BalanceChart from "@/app/components/BalanceChart";
 import ExpensePieChart from "@/app/components/ExpensePieChart";
 import { query } from "@/lib/db";
 import { ModeToggle } from "@/app/components/ModeToggle";
-import { Plus, Scroll, Settings, SquarePen } from "lucide-react";
-import { MdCallMade as ExpenseIcon } from "react-icons/md";
+import {  SquarePen } from "lucide-react";
 import { MdCallReceived as IncomeIcon } from "react-icons/md";
 import {
   Card,
@@ -75,7 +74,7 @@ export default async function Dashboard() {
       );
 
       balanceChartData = await query(
-        "(SELECT TO_CHAR(dates, 'YYYY-MM-DD') AS dates, balance FROM records WHERE userid = $1 AND dates < $2  ORDER BY dates DESC, times DESC LIMIT 1 ) UNION ALL ( SELECT TO_CHAR(dates, 'YYYY-MM-DD') AS dates, balance  FROM ( SELECT dates, balance,   ROW_NUMBER() OVER (PARTITION BY dates::date ORDER BY times DESC) AS rn FROM records  WHERE userid = $1 and dates >= $2) t WHERE t.rn = 1 ORDER BY dates)",
+        "(SELECT TO_CHAR(dates, 'YYYY-MM-DD') AS dates, balance FROM records WHERE userid = $1 AND dates < $2 ORDER BY dates DESC, times DESC, transid DESC LIMIT 1 ) UNION ALL ( SELECT TO_CHAR(dates, 'YYYY-MM-DD') AS dates, balance FROM ( SELECT dates, balance, ROW_NUMBER() OVER ( PARTITION BY dates::date ORDER BY times DESC, transid DESC ) AS rn FROM records WHERE userid = $1 AND dates >= $2 ) AS t WHERE t.rn = 1 ORDER BY dates)",
         [userDetails.id, firstOfMonth]
       );
 

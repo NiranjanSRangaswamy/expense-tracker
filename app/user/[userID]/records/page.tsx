@@ -1,4 +1,4 @@
-import { DataTableDemo } from "@/app/components/DataTableDemo";
+import { DataTable } from "@/app/components/DataTable";
 import { ModeToggle } from "@/app/components/ModeToggle";
 import { query } from "@/lib/db";
 import { verify } from "jsonwebtoken";
@@ -34,7 +34,7 @@ const page = async () => {
             <ModeToggle />
           </div>
         </div>
-        <DataTableDemo records={records} />
+        <DataTable records={records} />
       </div>
     </section>
   );

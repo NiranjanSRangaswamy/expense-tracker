@@ -19,17 +19,19 @@ const DeleteRecords = ({ transid }: { transid: number }) => {
   const router = useRouter()
   const handleDelete = async () => {
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/delete-record/${transid}`);
+      const res = await axios.delete(`/api/user/delete-record/${transid}`);
       if (res.status === 200) {
         toast({
           duration: 1000,
           variant: "default",
           description: "Record deleted successfully",
         });
-      } else {
-        throw new Error("Something went wrong, please try again");
-      }
+      } 
     } catch (error: any) {
+      let errorMessage = error.message
+      if(axios.isAxiosError(error)){
+        errorMessage =  error.response?.data.message
+      }
       toast({
         duration: 1000,
         variant: "destructive",

@@ -58,9 +58,14 @@ export function LoginCard() {
       router.push(`/user/${response.data.userID}/dashboard`);
       // debugger;
     } catch (error: any) {
+      let errorMessage = error.message;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.message;
+      }
       toast({
+        duration: 3000,
         variant: "destructive",
-        description: error.response.data.message,
+        description: errorMessage,
       });
       setIsLoading(false);
     }
@@ -120,40 +125,6 @@ export function LoginCard() {
             </Button>
           </form>
         </Form>
-        {/* <div className="flex items-center justify-center space-x-4">
-          <hr className="flex-grow border-gray-600" />
-          <span className=" text-sm">OR CONTINUE WITH</span>
-          <hr className="flex-grow border-gray-600" />
-        </div>
-        <div className="flex gap-6 items-center p-0">
-          <Button
-            type="submit"
-            className="w-full"
-            variant="outline"
-            onClick={() => setIsLoading(!isLoading)}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FiGithub />
-            )}
-            <span className="mx-2">Github</span>
-          </Button>
-          <Button
-            type="submit"
-            className="w-full"
-            variant="outline"
-            onClick={() => setIsLoading(!isLoading)}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FaGoogle />
-            )}
-            <span className="mx-2">Google</span>
-          </Button>
-        </div> */}
       </DialogContent>
     </Dialog>
   );

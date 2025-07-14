@@ -115,7 +115,7 @@ export function EditInitialBalance({
       const difference = values.newBalance - balance;
       const data = { value: difference, userId: userId };
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/edit-init-balance`,
+        `/api/user/edit-init-balance`,
         data
       );
       if (res.status == 200) {
@@ -205,7 +205,7 @@ export function AdjustByRecord({
       };
 
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/add-record`,
+        `/api/user/add-record`,
         data
       );
       if (res.status === 200) {

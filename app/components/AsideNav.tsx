@@ -82,15 +82,6 @@ const AsideNav = ({ userData }: { userData: UserDetails }) => {
             <UserCog className="mr-3" /> Settings
           </Button>
         </Link>
-
-        <Link href={`/`} className="w-full ">
-          <Button
-            variant={"nav"}
-            className="capitalize w-full text-left text-md h-16"
-          >
-            <UserCog className="mr-3" /> Home
-          </Button>
-        </Link>
       </Card>
       <Card className="w-11/12 mx-auto  bg-card">
         <Separator />

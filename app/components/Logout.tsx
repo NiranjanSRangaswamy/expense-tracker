@@ -3,7 +3,7 @@
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // Correct import
+import { useRouter } from "next/navigation";
 
 type Variant =
   | "default"
@@ -28,7 +28,7 @@ export function Logout({
   const handleClick = async () => {
     const res = await axios.post("/api/auth/logout");
     if (res.status === 200) {
-      router.refresh(); // Ensures the page re-fetches fresh data after logout
+      router.refresh();
     }
   };
 
@@ -39,7 +39,7 @@ export function Logout({
         variant={variant}
         className={`flex gap-3 ${classes}`}
       >
-        <LogOut size={size || 16} /> {/* Fix bitwise OR usage */}
+        <LogOut size={size || 16} />
         Logout
       </Button>
     </div>

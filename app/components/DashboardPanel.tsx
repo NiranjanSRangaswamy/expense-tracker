@@ -2,10 +2,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import TopNav from "./TopNav";
 import AsideNav from "./AsideNav";
-import axios from "axios";
-import Error from "next/error";
 import PageRefreshToast from "./PageRefreshToast";
-import { getClient, query } from "@/lib/db";
+import {  query } from "@/lib/db";
 import { JwtPayload, verify } from "jsonwebtoken";
 
 

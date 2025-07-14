@@ -52,7 +52,6 @@ const SignUpSchema = z
       .max(20, "Password must be less than 20 characters long"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    //.refine method is used for validating password and confirm password are same
     message: "Passwords don't match",
     path: ["confirmPassword"],
   }); 
@@ -85,9 +84,14 @@ export function SignUpCard() {
       const id = data.id;
       router.push(`/user/${id}/dashboard`);
     } catch (error: any) {
+      let errorMessage = error.message;
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.message;
+      }
       toast({
+        duration: 3000,
         variant: "destructive",
-        description: error.response.data.message,
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -112,8 +116,8 @@ export function SignUpCard() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
-              control={form.control}
               name="firstName"
+              control={form.control}
               render={({ field }) => (
                 <FormItem className="my-1">
                   <FormLabel className="">First name</FormLabel>
@@ -129,8 +133,8 @@ export function SignUpCard() {
               )}
             ></FormField>
             <FormField
-              control={form.control}
               name="lastName"
+              control={form.control}
               render={({ field }) => (
                 <FormItem className="my-1">
                   <FormLabel>Last name</FormLabel>
@@ -146,8 +150,8 @@ export function SignUpCard() {
               )}
             ></FormField>
             <FormField
-              control={form.control}
               name="email"
+              control={form.control}
               render={({ field }) => (
                 <FormItem className="my-1">
                   <FormLabel>Email</FormLabel>
@@ -159,8 +163,8 @@ export function SignUpCard() {
               )}
             ></FormField>
             <FormField
-              control={form.control}
               name="password"
+              control={form.control}
               render={({ field }) => (
                 <FormItem className="my-1">
                   <FormLabel>Password</FormLabel>
@@ -177,8 +181,8 @@ export function SignUpCard() {
               )}
             ></FormField>
             <FormField
-              control={form.control}
               name="confirmPassword"
+              control={form.control}
               render={({ field }) => (
                 <FormItem className="my-1">
                   <FormLabel>Confirm password</FormLabel>
@@ -206,40 +210,6 @@ export function SignUpCard() {
             </Button>
           </form>
         </Form>
-        {/* <div className="flex items-center justify-center space-x-4">
-          <hr className="flex-grow border-gray-600" />
-          <span className=" text-sm">OR CONTINUE WITH</span>
-          <hr className="flex-grow border-gray-600" />
-        </div>
-        <div className="flex gap-6 items-center p-0">
-          <Button
-            type="submit"
-            className="w-full"
-            variant="outline"
-            onClick={() => setIsLoading(!isLoading)}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FiGithub />
-            )}
-            <span className="mx-2">Github</span>
-          </Button>
-          <Button
-            type="submit"
-            className="w-full"
-            variant="outline"
-            onClick={() => setIsLoading(!isLoading)}
-          >
-            {isLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FaGoogle />
-            )}
-            <span className="mx-2">Google</span>
-          </Button>
-        </div> */}
       </DialogContent>
     </Dialog>
   );

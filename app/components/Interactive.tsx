@@ -1,11 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 
 import { CartesianGrid, XAxis, YAxis, Line, LineChart } from "recharts";
-
-import { Bold, Italic, Underline } from "lucide-react";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -217,7 +214,6 @@ function processData(
   let obj: { [key: string]: { [key: string]: number } } = {};
 
   records.forEach((record) => {
-    //converting the date to local time of sweden to get in  the format of YYYY-MM-DD. indian format is DD/MM/YYYY
     let dateString: string = record.dates.toLocaleDateString("sv-SE");
     let transType: string = record.transtype;
     if (obj[dateString] === undefined) {
@@ -235,7 +231,7 @@ function processData(
   let balance = obj[startingDate]["balance"];
 
   const today = new Date();
-  today.setHours(23, 59, 59, 999); // changing to final moment to get the todays date if the start time is more than current time
+  today.setHours(23, 59, 59, 999); 
 
   for (
     let date = new Date(start);
