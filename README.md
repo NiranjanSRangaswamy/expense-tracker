@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expense Tracker
 
-## Getting Started
+A modern and themeable expense tracking web application built with Next.js, PostgreSQL, Tailwind CSS, and shadcn/ui. Supports light/dark mode, customizable color themes, responsive UI, and real-time balance tracking.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Add, edit, delete, and filter transaction records
+--Filter by category, type, and date range
+- Interactive charts for analyzing
+- Date-range filtering & sorting
+- Responsive UI with color themes (blue, green, yellow, etc.)
+- Light/Dark/System mode switch
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+# Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 15 (App Router)
+- PostgreSQL (via direct queries in server components)
+- Tailwind CSS + ShadCN/UI
+- next-themes for theming
+- Lucide Icons 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Installation & Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+git clone https://github.com/your-username/expense-tracker.git
+cd expense-tracker
 
-## Deploy on Vercel
+Install dependencies
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Create `.env` file
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create a .env.local file in the root with the following:
+
+Environment Variables
+Create a .env file and add:
+PG_USER=user
+PG_PASSWORD=password
+PG_HOST=localhost
+PG_DATABASE=database
+PG_PORT=port
+JWT_SECRET=Secret key
+NEXT_PUBLIC_BASE_URL=base url
+
+# Database Setup
+
+
+CREATE TABLE usertable (
+  id SERIAL PRIMARY KEY,
+  firstname VARCHAR(50) NOT NULL,
+  lastname VARCHAR(50) NOT NULL,
+  email VARCHAR(256) NOT NULL UNIQUE,
+  password TEXT NOTNULL,
+  balance INTEGER,
+  budget INTEGER
+);
+ 
+
+CREATE TABLE records (
+  transid SERIAL PRIMARY KEY,
+  transtype VARCHAR(10) NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  subcategory VARCHAR(50) NOT NULL,
+  note TEXT,
+  payer VARCHAR(50),
+  dates DATE NOT NULL,
+  times TIME WITHOUT TIME ZONE NOT NULL,
+  balance INTEGER NOT NULL,
+  value INTEGER NOT NULL,
+  userid INTEGER REFERENCES usertable(id)
+);
