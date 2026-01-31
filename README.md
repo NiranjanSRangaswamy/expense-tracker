@@ -24,7 +24,7 @@ A modern and themeable expense tracking web application built with Next.js, Post
 
 # Installation & Setup
 
-git clone https://github.com/your-username/expense-tracker.git
+git clone https://github.com/NiranjanSRangaswamy/expense-tracker.git
 cd expense-tracker
 
 Install dependencies
