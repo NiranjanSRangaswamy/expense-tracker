@@ -14,9 +14,9 @@ interface GetRecord {
 
 export async function DELETE(
   request: Request,
-  context: { params: { transid: string } }
+  context: { params: Promise<{ transid: string }> }
 ) {
-  const { transid } = context.params;
+  const { transid } = await context.params;
   let client: PoolClient | null = null; 
 
   try {
