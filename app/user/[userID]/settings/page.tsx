@@ -6,8 +6,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { query } from "@/lib/db";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { useRouter } from "next/router";
 
 const Settings = async () => {
+
+  const router = useRouter()
   let userDetails: UserDetails | null = null;
   const cookieStore = await cookies();
   const token = cookieStore.get("token");
@@ -19,8 +22,9 @@ const Settings = async () => {
       [id]
     );
     userDetails = res[0];
-  } catch (error: any) {
+  } catch (error: any) { 
     console.log(error.message);
+    
   }
   return (
     <section className="settings grow w-full md:h-screen md:overflow-x-hidden">

@@ -252,7 +252,7 @@ const EditRecords = ({ record }: { record: Records }) => {
   const selectedCategory = form.watch("category");
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DialogTrigger className="text-sm rounded-md bg-primary h-10 px-4 py-2 text-primary-foreground hover:bg-primary/90">
         Edit Record
       </DialogTrigger>
@@ -439,7 +439,6 @@ const EditRecords = ({ record }: { record: Records }) => {
                             <Popover
                               open={open}
                               onOpenChange={setOpen}
-                              modal={true}
                             >
                               <PopoverTrigger
                                 asChild
